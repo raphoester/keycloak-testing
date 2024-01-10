@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const uuid = require('uuid');
+const axios = require('axios');
 
 const app = express();
 
@@ -36,18 +37,16 @@ app.get('/', (req, res) => {
 
 // GET /keycloak is the callback handler the user is sent to after a successful login on keycloak 
 app.get('/keycloak', (req, res) => {
-    console.log(req.method)
-    console.log(req.query)
-    console.log(req.url)
-    console.log(req.params)
-    console.log(req.headers)
-    console.log(req.body)
-
-    var error = req.query['error']
+    const error = req.query['error']
     if (error != undefined) {
         res.send(`keycloak sent back an error: ${error}`)
         return
     }
+    
+    let jsonBody = JSON.stringify(req.query)
+    console.log(jsonBody)
+    
+    //TODO: send that to the backend through axios and get back the access token
 
     res.send(`login succeeded`)
 })
